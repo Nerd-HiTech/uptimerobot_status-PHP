@@ -7,8 +7,9 @@
 	<body>
 		<?php
 			$api_uptimerobot= 'u142481-e8ad7454b1327071daa36e5d';
-			$danger_porcentage = '95';
-
+			$danger_porcentage = 95.00;
+			$success_porcentage = 99.00;
+			
 			$json_url_uptimerobot = "http://api.uptimerobot.com/getMonitors?apiKey=" .$api_uptimerobot. "&format=json&noJsonCallback=1";
 			$json_uptimerobot = json_decode(file_get_contents($json_url_uptimerobot));
 			$monitors = (array)$json_uptimerobot->monitors;
@@ -31,7 +32,10 @@
 								elseif($monitor['status']==9){$server_status="Offline";$status_color="danger";}
 								else{$server_status="ERROR!";$color="danger";}
 							
-							if($monitor['alltimeuptimeratio']>$danger_porcentage){$uptime_color="default";}else{$uptime_color="danger";}
+							if($monitor['alltimeuptimeratio']>=$success_porcentage){$uptime_color="success";}
+							elseif($monitor['alltimeuptimeratio']>=$danger_porcentage){$uptime_color="default";}
+							else{$uptime_color="danger";}
+							
 							if($monitor['status']!=2 && $monitor['alltimeuptimeratio']<=$danger_porcentage){$row_color="danger";}
 								elseif($monitor['status']!=2 || $monitor['alltimeuptimeratio']<=$danger_porcentage){$row_color="warning";}
 								else{$row_color="success";}
